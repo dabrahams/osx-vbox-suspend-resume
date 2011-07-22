@@ -1,0 +1,6 @@
+{
+  Description     = "VirtualBox Machine Suspend/Resume";
+  Provides        = ("VBoxHeadless");
+  Uses            = ("VirtualBox");
+  OrderPreference = "None";
+}
