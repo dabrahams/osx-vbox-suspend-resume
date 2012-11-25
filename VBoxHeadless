@@ -8,8 +8,10 @@ VBOXMANAGE="sudo -u $VBOXUSER -H ${USR}VBoxManage"
 # Thanks to http://charlesa.net/scripts/linux/stopvm.php
 StartService()
 {
+    ConsoleMessage "VBoxHeadless StartService"
     if [[ -f ~vbox/.suspendedvms ]]
     then
+        ConsoleMessage "VBoxHeadless Found VMs to resume"
         for v in $(sed 's/^[^{]*//' ~vbox/.suspendedvms); do
             ConsoleMessage "VBoxHeadless resuming $v"
             $VBOXMANAGE startvm --type headless "$v"
@@ -19,9 +21,11 @@ StartService()
 
 StopService()
 {
+    ConsoleMessage "VBoxHeadless StopService"
     rm -f ~vbox/.suspendedvms
     if [[ -n $($VBOXMANAGE -nologo list runningvms) ]]
     then
+        ConsoleMessage "VBoxHeadless recording list of running VMs"
         $VBOXMANAGE -nologo list runningvms > ~vbox/.suspendedvms
         for v in $(sed 's/^[^{]*//' ~vbox/.suspendedvms); do
             ConsoleMessage "VBoxHeadless saving state of $v"
