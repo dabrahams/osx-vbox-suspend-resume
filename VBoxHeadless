@@ -2,15 +2,15 @@
 . /etc/rc.common
 
 USR=/usr/bin/
-VBOXUSER=vboxen
+VBOXUSER=vbox
 VBOXMANAGE="sudo -u $VBOXUSER -H ${USR}VBoxManage"
 
 # Thanks to http://charlesa.net/scripts/linux/stopvm.php
 StartService()
 {
-    if [[ -f ~vboxen/.suspendedvms ]]
+    if [[ -f ~vbox/.suspendedvms ]]
     then
-        for v in $(sed 's/^[^{]*//' ~vboxen/.suspendedvms); do
+        for v in $(sed 's/^[^{]*//' ~vbox/.suspendedvms); do
             ConsoleMessage "VBoxHeadless resuming $v"
             $VBOXMANAGE startvm --type headless "$v"
         done
@@ -19,11 +19,11 @@ StartService()
 
 StopService()
 {
-    rm -f ~vboxen/.suspendedvms
+    rm -f ~vbox/.suspendedvms
     if [[ -n $($VBOXMANAGE -nologo list runningvms) ]]
     then
-        $VBOXMANAGE -nologo list runningvms > ~vboxen/.suspendedvms
-        for v in $(sed 's/^[^{]*//' ~vboxen/.suspendedvms); do
+        $VBOXMANAGE -nologo list runningvms > ~vbox/.suspendedvms
+        for v in $(sed 's/^[^{]*//' ~vbox/.suspendedvms); do
             ConsoleMessage "VBoxHeadless saving state of $v"
             $VBOXMANAGE controlvm "$v" savestate
         done
